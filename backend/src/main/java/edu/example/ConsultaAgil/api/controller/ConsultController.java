@@ -32,7 +32,7 @@ public class ConsultController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Consult> addConsult(CreateConsult request) {
+    public ResponseEntity<Consult> addConsult(@RequestBody CreateConsult request) {
         Consult response = service.createConsult(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

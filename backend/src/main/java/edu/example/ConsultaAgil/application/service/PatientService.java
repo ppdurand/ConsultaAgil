@@ -3,10 +3,12 @@ package edu.example.ConsultaAgil.application.service;
 import edu.example.ConsultaAgil.application.dto.PatientDTO.*;
 import edu.example.ConsultaAgil.domain.model.Patient;
 import edu.example.ConsultaAgil.infra.repository.PatientRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PatientService {
     private final PatientRepository repository;
 
