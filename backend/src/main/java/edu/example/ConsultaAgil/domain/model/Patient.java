@@ -11,16 +11,24 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
+    private String telephone;
     @OneToMany
     private List<Consult> consults;
 
     public Patient() {
     }
 
-    public Patient(int id, String nome, List<Consult> consults) {
-        this.id = id;
+    public Patient(String nome, String telephone) {
         this.nome = nome;
+        this.telephone = telephone;
+    }
+
+    public Patient update(String name, String telephone, List<Consult> consults){
+        this.nome = name;
+        this.telephone = telephone;
         this.consults = consults;
+
+        return this;
     }
 
     public int getId() {
@@ -45,5 +53,13 @@ public class Patient {
 
     public void setConsults(List<Consult> consults) {
         this.consults = consults;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 }

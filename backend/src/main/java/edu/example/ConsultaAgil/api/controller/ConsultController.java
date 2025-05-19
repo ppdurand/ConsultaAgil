@@ -6,12 +6,12 @@ import edu.example.ConsultaAgil.domain.model.Consult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("consult")
+@RequestMapping("/consults")
 public class ConsultController {
     private final ConsultService service;
 
@@ -19,26 +19,31 @@ public class ConsultController {
         this.service = service;
     }
 
+    @GetMapping("/{id}")
     public ResponseEntity<Consult> getConsultById(long id) {
         Consult response = service.getConsultById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/list")
     public ResponseEntity<List<Consult>> listConsult() {
         List<Consult> response = service.listConsults();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/add")
     public ResponseEntity<Consult> addConsult(CreateConsult request) {
         Consult response = service.createConsult(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/update/{id}")
     public ResponseEntity<Consult> updateConsult(long id, UpdateConsult request) {
         Consult response = service.updateConsult(request, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Consult> deleteConsult(long id) {
         service.deleteConsult(id);
         return new ResponseEntity<>(HttpStatus.OK);
