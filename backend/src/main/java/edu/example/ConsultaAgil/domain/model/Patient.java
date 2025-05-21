@@ -23,14 +23,6 @@ public class Patient {
         this.telephone = telephone;
     }
 
-    public Patient update(String name, String telephone, List<Consult> consults){
-        this.nome = name;
-        this.telephone = telephone;
-        this.consults = consults;
-
-        return this;
-    }
-
     public int getId() {
         return id;
     }

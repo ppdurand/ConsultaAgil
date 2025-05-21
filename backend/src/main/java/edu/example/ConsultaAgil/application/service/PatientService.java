@@ -1,6 +1,7 @@
 package edu.example.ConsultaAgil.application.service;
 
 import edu.example.ConsultaAgil.application.dto.PatientDTO.*;
+import edu.example.ConsultaAgil.application.mapper.PatientMapper;
 import edu.example.ConsultaAgil.domain.model.Patient;
 import edu.example.ConsultaAgil.infra.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import java.util.Optional;
 @Service
 public class PatientService {
     private final PatientRepository repository;
+    private final PatientMapper mapper;
 
-    public PatientService(PatientRepository repository) {
+    public PatientService(PatientRepository repository, PatientMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     public Patient getPatientById(long id) {
@@ -36,9 +39,8 @@ public class PatientService {
             return null;
         }
 
-        Patient patient = consult.get();
-        patient.update(request.name(), request.telephone(), request.consults());
-        return repository.save(patient);
+        Patient entity = mapper.toModel(request, consult.get());
+        return repository.save(entity);
     }
 
     public void deletePatient(long id) {

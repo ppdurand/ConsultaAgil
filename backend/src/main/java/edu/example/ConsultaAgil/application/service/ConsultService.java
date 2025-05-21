@@ -1,6 +1,7 @@
 package edu.example.ConsultaAgil.application.service;
 
 import edu.example.ConsultaAgil.application.dto.ConsultDTO.*;
+import edu.example.ConsultaAgil.application.mapper.ConsultMapper;
 import edu.example.ConsultaAgil.domain.model.Consult;
 import edu.example.ConsultaAgil.domain.model.Patient;
 import edu.example.ConsultaAgil.infra.repository.ConsultRepository;
@@ -14,10 +15,13 @@ import java.util.Optional;
 public class ConsultService {
     private final ConsultRepository repository;
     private final PatientRepository patientRepository;
+    private final ConsultMapper mapper;
 
-    public ConsultService(ConsultRepository consultRepository, PatientRepository patientRepository) {
+    public ConsultService(ConsultRepository consultRepository, PatientRepository patientRepository,
+                          ConsultMapper mapper) {
         this.repository = consultRepository;
         this.patientRepository = patientRepository;
+        this.mapper = mapper;
     }
 
     public Consult getConsultById(Long id) {
@@ -49,10 +53,8 @@ public class ConsultService {
         if (consultOptional.isEmpty()) {
             return null;
         }
-        Consult consult = consultOptional.get();
-
-        consult.update(request.date(), request.doctor());
-        return repository.save(consult);
+        Consult entity = mapper.toModel(request, consultOptional.get());
+        return repository.save(entity);
     }
 
     public void deleteConsult(Long id) {
