@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <RegisterPatient />
-      {/* <ListPatients /> */}
+      <ListPatients />
     </>
   )
 }
