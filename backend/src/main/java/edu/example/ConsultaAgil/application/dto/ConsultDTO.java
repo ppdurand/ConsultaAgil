@@ -1,7 +1,5 @@
 package edu.example.ConsultaAgil.application.dto;
 
-import edu.example.ConsultaAgil.domain.model.Patient;
-
 import java.time.LocalDateTime;
 
 public class ConsultDTO {

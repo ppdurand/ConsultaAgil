@@ -11,6 +11,7 @@ public class ConsultMapper {
     public ConsultMapper(){}
 
     public Consult toModel(UpdateConsult dto, Consult model){
+        System.out.println(dto);
         model.setData(dto.date());
         model.setDoctor(dto.doctor());
 

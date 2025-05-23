@@ -20,7 +20,7 @@ public class ConsultController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Consult> getConsultById(long id) {
+    public ResponseEntity<Consult> getConsultById(@PathVariable Long id) {
         Consult response = service.getConsultById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -38,13 +38,13 @@ public class ConsultController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Consult> updateConsult(long id, UpdateConsult request) {
+    public ResponseEntity<Consult> updateConsult(@PathVariable Long id, @RequestBody UpdateConsult request) {
         Consult response = service.updateConsult(request, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Consult> deleteConsult(long id) {
+    public ResponseEntity<Consult> deleteConsult(@PathVariable Long id) {
         service.deleteConsult(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
