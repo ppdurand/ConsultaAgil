@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table } from "antd";
+import { DeletePacient } from "../../Requests/DeletePacient";
 
 export function ListPatients() {
     const [patients, setPatients] = useState([]);
@@ -21,6 +22,11 @@ export function ListPatients() {
             });
     }, []);
 
+    function handleDelete(id){
+        console.log(id)
+        DeletePacient(id)
+    }
+
     const columns = [
         {
             title: 'Nome',
@@ -38,7 +44,7 @@ export function ListPatients() {
             render: (_, record) => (
                 <span>
                     <a>Editar</a>
-                    <a style={{ marginLeft: 16 }}>Excluir</a>
+                    <a  onClick={() => handleDelete(record.id)}style={{ marginLeft: 16 }}>Excluir</a>
                 </span>
             ),
         }
