@@ -43,7 +43,7 @@ public class PatientService {
         return repository.save(entity);
     }
 
-    public void deletePatient(long id) {
+    public void deletePatient(Long id) {
         repository.deleteById(id);
     }
 }
