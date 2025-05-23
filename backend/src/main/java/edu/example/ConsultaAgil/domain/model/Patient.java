@@ -1,7 +1,9 @@
 package edu.example.ConsultaAgil.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,11 +11,12 @@ import java.util.List;
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String nome;
     private String telephone;
-    @OneToMany
-    private List<Consult> consults;
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Consult> consults = new ArrayList<>();
 
     public Patient() {
     }
@@ -23,11 +26,11 @@ public class Patient {
         this.telephone = telephone;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

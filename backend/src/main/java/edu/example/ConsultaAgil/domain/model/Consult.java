@@ -1,7 +1,7 @@
 package edu.example.ConsultaAgil.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -10,9 +10,11 @@ import java.time.LocalDateTime;
 public class Consult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private LocalDateTime data;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
+    @JsonManagedReference
     private Patient patient;
     private String doctor;
 
@@ -24,19 +26,11 @@ public class Consult {
         this.doctor = doctor;
     }
 
-    public Consult update(LocalDateTime data, String doctor){
-        this.data = data;
-        this.doctor = doctor;
-
-        return this;
-
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,7 +46,7 @@ public class Consult {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatientId(Long patientId) {
         this.patient = patient;
     }
 

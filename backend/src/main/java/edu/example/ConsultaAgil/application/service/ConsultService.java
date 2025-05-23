@@ -37,15 +37,13 @@ public class ConsultService {
     }
 
     public Consult createConsult(CreateConsult request) {
-        System.out.println(request);
         Optional<Patient> patient = patientRepository.findById(request.patientId());
-        System.out.println(patient);
         if (patient.isEmpty()) {
             return null;
         }
         Consult consult = new Consult(request.date(), patient.get(), request.doctor());
-
-        return repository.save(consult);
+        Consult savedConsult = repository.save(consult);
+        return savedConsult;
     }
 
     public Consult updateConsult(UpdateConsult request, Long id) {
