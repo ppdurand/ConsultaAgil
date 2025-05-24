@@ -14,7 +14,6 @@ export function ListPatients() {
                 return res.json();
             })
             .then((data) => {
-                console.log(data);
                 setPatients(data);
             })
             .catch((err) => {
@@ -23,7 +22,6 @@ export function ListPatients() {
     }, []);
 
     function handleDelete(id){
-        console.log(id)
         DeletePacient(id)
     }
 
