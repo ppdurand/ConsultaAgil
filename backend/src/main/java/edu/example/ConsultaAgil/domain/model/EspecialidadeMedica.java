@@ -1,3 +1,5 @@
+package edu.example.ConsultaAgil.domain.model;
+
 public enum EspecialidadeMedica {
     CARDIOLOGIA("Cardiologia"),
     DERMATOLOGIA("Dermatologia"),

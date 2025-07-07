@@ -1,14 +1,18 @@
+// src/components/Consult/CreateConsult.jsx
 import { useEffect, useState } from "react";
-import { Button, Card, DatePicker, Form, Input, Select } from "antd";
+import { Button, Card, DatePicker, Form, Select } from "antd";
 import { ListPacient } from "../../Requests/ListPacient.jsx";
+import { ListDoctors } from "../../Requests/ListDoctors.jsx";
 
 export function CreateConsult() {
-    const [options, setOptions] = useState([]);
+    const [patientOptions, setPatientOptions] = useState([]);
+    const [doctorOptions, setDoctorOptions] = useState([]);
 
     async function handleSaveConsult(values) {
         const payload = {
-            ...values,
-            date: values.date.format("YYYY-MM-DDTHH:mm:ss"), // ⬅️ formato ISO LocalDateTime
+            patientId: values.patientId,
+            doctorId: values.doctorId,
+            date: values.date.format("YYYY-MM-DDTHH:mm:ss"),
         };
         console.log("Payload", payload);
         try {
@@ -21,50 +25,73 @@ export function CreateConsult() {
             });
 
             if (!res.ok) {
-                const error = await res.json()
-                throw new Error(error.message || 'Erro ao fazer cadastro');
+                const error = await res.json();
+                throw new Error(error.message || 'Erro ao fazer cadastro da consulta.');
             }
 
-            const data = await res.json()
+            const data = await res.json();
             console.log(data);
-            alert('Consulta criada com sucesso!')
+            alert('Consulta criada com sucesso!');
 
         } catch (err) {
-            alert(err.message)
+            alert(err.message);
         }
     }
 
     useEffect(() => {
-        async function fetchPacients() {
-            const allPacients = await ListPacient(); // Agora está certo!
-            const formattedOptions = allPacients.map((pacient) => ({
-                value: pacient.id,
-                label: pacient.nome,
-            }));
-            setOptions(formattedOptions);
+        async function fetchPatients() {
+            try {
+                const allPatients = await ListPacient();
+                const formattedOptions = allPatients.map((patient) => ({
+                    label: patient.id,
+                    value: patient.name,
+                }));
+                setPatientOptions(formattedOptions);
+            } catch (error) {
+                console.error("Erro ao carregar pacientes:", error);
+                alert("Não foi possível carregar a lista de pacientes.");
+            }
         }
 
-        fetchPacients();
-    }, [])
+        async function fetchDoctors() {
+            try {
+                const allDoctors = await ListDoctors();
+                const formattedOptions = allDoctors.map((doctor) => ({
+                    value: doctor.id,
+                    label: `${doctor.name} (${doctor.especialidadeMedica.replace(/_/g, ' ')})`,
+                }));
+                setDoctorOptions(formattedOptions);
+            } catch (error) {
+                console.error("Erro ao carregar médicos:", error);
+                alert("Não foi possível carregar a lista de médicos.");
+            }
+        }
+
+        fetchPatients();
+        fetchDoctors();
+    }, []);
+
     return (
         <div className='register-container'>
             <Card className='register-card'>
                 <h1 className='register-title'>Marcar Consulta</h1>
                 <Form onFinish={handleSaveConsult} layout='vertical'>
                     <Form.Item
-                        label="Nome do paciente"
+                        label="Paciente"
                         name="patientId"
-                        rules={[{ required: true, message: 'Informe o nome do paciente' }]}
+                        rules={[{ required: true, message: 'Selecione o paciente!' }]}
                     >
-                        <Select options={options} placeholder="Nome do paciente" />
+                        <Select options={patientOptions} placeholder="Selecione o paciente" />
                     </Form.Item>
+
                     <Form.Item
                         label="Médico"
-                        name="doctor"
-                        rules={[{ required: true, message: 'Doutor(a)' }]}
+                        name="doctorId"
+                        rules={[{ required: true, message: 'Selecione o médico!' }]}
                     >
-                        <Input placeholder="Nome do médico" />
+                        <Select options={doctorOptions} placeholder="Selecione o médico" />
                     </Form.Item>
+
                     <Form.Item
                         label="Data da consulta"
                         name="date"
@@ -76,6 +103,7 @@ export function CreateConsult() {
                             placeholder="Data e hora da consulta"
                         />
                     </Form.Item>
+
                     <Form.Item>
                         <Button type="primary" block htmlType="submit">Registrar consulta</Button>
                     </Form.Item>
